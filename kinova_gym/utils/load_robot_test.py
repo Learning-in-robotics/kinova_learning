@@ -8,7 +8,10 @@ p.setGravity(0,0,-9.8)
 planeId = p.loadURDF("plane.urdf")
 startPos = [0,0,0]
 startOrientation = p.getQuaternionFromEuler([0,0,0])
-kinovaId = p.loadURDF("kinova_gym/models/urdf/gen3.urdf",startPos, startOrientation)
+# kinovaId = p.loadURDF("kinova_gym/models/urdf/gen3_robotiq_2f_85.urdf",startPos, startOrientation)
+kinova2f85Id = p.loadURDF("kinova_gym/models/urdf/gen3_robotiq_2f_85.urdf",startPos, startOrientation)
+
+kinovaId = kinova2f85Id
 
 num_links = p.getNumJoints(kinovaId)
 working_surface_link = None
