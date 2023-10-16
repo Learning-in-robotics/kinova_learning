@@ -4,6 +4,11 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="gen3_robotiq_2f_85">
+  
+  <mujoco>
+    <compiler meshdir="meshes/" />
+  </mujoco>
+
   <!-- Run the macros -->
   <link name="base_link">
     <inertial>

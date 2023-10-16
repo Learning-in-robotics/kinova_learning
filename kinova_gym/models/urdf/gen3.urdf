@@ -5,26 +5,9 @@
 <!-- =================================================================================== -->
 <robot name="gen3_robotiq_2f_85">
 
-  <link name="table">
-    <visual>
-      <geometry>
-        <box size="2 2 0.1" />
-      </geometry>
-      <material name="wood" />
-    </visual>
-    <collision>
-      <geometry>
-        <box size="2 2 0.1" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!-- joint bw table and base link -->
-  <joint name="arm_table_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.1" />
-    <parent link="table" />
-    <child link="base_link" />
-  </joint>
+  <mujoco>
+    <compiler meshdir="meshes/" />
+  </mujoco>
 
   <!-- Run the macros -->
   <link name="base_link">

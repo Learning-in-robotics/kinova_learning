@@ -32,3 +32,11 @@ cd ~/kinova_learning
 
 python3 kinova_gym/utils/load_robot_test.py
 ```
+
+### To load the kinova arm in mujoco
+
+```bash
+cd ~/kinova_learning/kinova_gym
+
+python3 utils/load_robot_mujoco.py
+```
