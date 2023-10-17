@@ -1,11 +1,11 @@
-# Write Your Descriptive Project Title Here
+# VR-PPL: Video-based Robo-Pick & Place Learning
 
 ## Team Members
 
-* Member 1
-* Member 2
-...
-* Member n
+* Anudeep Sajja
+* Chaitanya Gumudala
+* Hamsa Datta Perur
+* Vamsi Krishna Kalagaturu
 
 ## Short Project Description
 
