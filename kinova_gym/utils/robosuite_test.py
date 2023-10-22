@@ -40,8 +40,6 @@ env = SimpleEnv(
     has_renderer=True,
     has_offscreen_renderer=True,
     use_camera_obs=False,
-    camera_heights=1024,
-    camera_widths=1024,
 )
 
 env.reset()
@@ -52,12 +50,16 @@ d = env.sim.data._data
 
 # run mujoco simulation
 with mujoco.viewer.launch_passive(m, d) as viewer:
-    # Close the viewer automatically after 30 wall-seconds.
-    # start = time.time()
-    while viewer.is_running() and True:
-        # step_start = time.time()
 
-        # obs, reward, done, info = env.step(np.array([2.5, 0, 0, 0, 0, 0, 0, 0])) 
+    # set viewer cam properties
+    viewer.cam.distance = 3.35
+    viewer.cam.azimuth = 90
+    viewer.cam.elevation = -45
+    viewer.cam.lookat[0] = -0.5
+    viewer.cam.lookat[1] = 0.0
+    viewer.cam.lookat[2] = 1.015
+
+    while viewer.is_running() and True:
 
         num_joints = 7
         for j in range(1, num_joints):
@@ -70,17 +72,8 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
         
         mujoco.mj_step(m, d)
 
-        # Example modification of a viewer option: toggle contact points every two seconds.
-        # with viewer.lock():
-        #     viewer.opt.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = int(d.time % 2)
-
         # Pick up changes to the physics state, apply perturbations, update options from GUI.
         viewer.sync()
-
-        # Rudimentary time keeping, will drift relative to wall clock.
-        # time_until_next_step = m.opt.timestep - (time.time() - step_start)
-        # if time_until_next_step > 0:
-        #     time.sleep(time_until_next_step)
 
 # for i in range(1000):
 #     action = np.random.randn(env.robots[0].dof) # sample random action
