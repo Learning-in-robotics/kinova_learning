@@ -160,6 +160,7 @@ env = SimpleEnv(
     use_camera_obs=False,
     render_collision_mesh=False,
     render_visual_mesh=True,
+    ignore_done=True,
 )
 
 env.reset()
@@ -182,15 +183,17 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
     while viewer.is_running() and True:
 
         num_joints = 7
-        for j in range(1, num_joints):
-            d.qpos[j] = 0
-            d.qvel[j] = 0
-            d.qacc[j] = 0
-        # d.qvel[0] = 10
-        # set first joint torque to 10
-        d.ctrl[0] = 2.5
+        # for j in range(1, num_joints):
+        #     d.qpos[j] = 0
+        #     d.qvel[j] = 0
+        #     d.qacc[j] = 0
+        # # d.qvel[0] = 10
+        # # set first joint torque to 10
+        # d.ctrl[0] = 2.5
         
-        mujoco.mj_step(m, d)
+        # mujoco.mj_step(m, d)
+
+        env.step(np.array([2.5, 0, 0, 0, 0, 0, 0, 0]))
 
         # Pick up changes to the physics state, apply perturbations, update options from GUI.
         viewer.sync()
