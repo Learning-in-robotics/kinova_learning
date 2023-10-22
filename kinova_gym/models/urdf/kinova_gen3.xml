@@ -1,6 +1,17 @@
 <mujoco model="gen3_robotiq_2f_85">
   <compiler angle="radian" meshdir="meshes/" autolimits="true"/>
   <statistic meansize="0.135667" extent="1.27963" center="6.60856e-06 -0.0231166 0.612477"/>
+  <actuator>
+    <!-- Physical limits of the actuator. Pulled directly from datasheet. See pg 24 of:
+     https://www.kinovarobotics.com/sites/default/files/UG-014_KINOVA_Gen3_Ultra_lightweight_robot_User_guide_EN_R06_0.pdf -->
+    <motor ctrllimited="true" ctrlrange="-39.0 39.0" joint="joint_1" name="torq_j1"/>
+    <motor ctrllimited="true" ctrlrange="-39.0 39.0" joint="joint_2" name="torq_j2"/>
+    <motor ctrllimited="true" ctrlrange="-39.0 39.0" joint="joint_3" name="torq_j3"/>
+    <motor ctrllimited="true" ctrlrange="-39.0 39.0" joint="joint_4" name="torq_j4"/>
+    <motor ctrllimited="true" ctrlrange="-9.0 9.0" joint="joint_5" name="torq_j5"/>
+    <motor ctrllimited="true" ctrlrange="-9.0 9.0" joint="joint_6" name="torq_j6"/>
+    <motor ctrllimited="true" ctrlrange="-9.0 9.0" joint="joint_7" name="torq_j7"/>
+</actuator>
   <asset>
     <mesh name="base_link" file="base_link.STL"/>
     <mesh name="shoulder_link" file="shoulder_link.STL"/>

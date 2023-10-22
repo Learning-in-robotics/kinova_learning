@@ -1,0 +1,3 @@
+[submodule "robosuite"]
+	path = robosuite
+	url = git@github.com:Learning-in-robotics/robosuite.git

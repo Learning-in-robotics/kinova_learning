@@ -20,9 +20,14 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
     # a policy and applies a control signal before stepping the physics.
     # set all joint positions to 0
     num_joints = 7
-    for j in range(num_joints):
+    for j in range(1, num_joints):
         d.qpos[j] = 0
         d.qvel[j] = 0
+        d.qacc[j] = 0
+    # d.qvel[0] = 10
+    # set first joint torque to 10
+    d.ctrl[0] = 0.05
+    
     mujoco.mj_step(m, d)
 
     # Example modification of a viewer option: toggle contact points every two seconds.
