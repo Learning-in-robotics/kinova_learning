@@ -20,7 +20,7 @@ git clone git@github.com:Learning-in-robotics/Kinova_learning.git
 ```bash
 cd ~/kinova_learning
 
-pip install -e .
+pip install kinova_gym robosuite/
 ```
 
 ## Test
