@@ -1,4 +1,4 @@
-# VR-PPL: Video-based Robo-Pick & Place Learning
+# VR-PPL: Video based Robo-Pick & Place Learning
 
 ## Team Members
 
