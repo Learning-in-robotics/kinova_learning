@@ -180,26 +180,29 @@ class SimpleEnv(SingleArmEnv):
     def render(self):
         self.viewer.sync()
 
-# create the environment
-env = SimpleEnv(
-    robots="Kinova3",
-    mount_types="TableMount",
-    has_renderer=True,
-    has_offscreen_renderer=True,
-    use_camera_obs=False,
-    render_collision_mesh=False,
-    render_visual_mesh=True,
-    ignore_done=True,
-)
 
-env = GymWrapper(env)
+if __name__ == "__main__":
 
-env.reset(seed=0)
+  # create the environment
+  env = SimpleEnv(
+      robots="Kinova3",
+      mount_types="TableMount",
+      has_renderer=True,
+      has_offscreen_renderer=True,
+      use_camera_obs=False,
+      render_collision_mesh=False,
+      render_visual_mesh=True,
+      ignore_done=True,
+  )
 
-env.env.init_renderer()
+  env = GymWrapper(env)
 
-# run the simulation
-for i in range(1000):
-    env.step([1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    env.render()
-    time.sleep(0.01)
+  env.reset(seed=0)
+
+  env.env.init_renderer()
+
+  # run the simulation
+  for i in range(1000):
+      env.step([1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+      env.render()
+      time.sleep(0.01)
