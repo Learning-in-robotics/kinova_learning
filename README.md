@@ -15,6 +15,11 @@ git clone --recurse-submodules -j8 git@github.com:Learning-in-robotics/kinova_le
 
 - Create a virual environment with python >=3.10
 
+```bash
+cd ~/kinova_learning
+
+conda create -n venv_name -f environment.yml
+```
 
 ### Install the packages
 ```bash
