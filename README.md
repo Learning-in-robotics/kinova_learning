@@ -8,7 +8,7 @@ Learning simple tasks with Kinova Gen3 robot
 ```bash
 mkdir -p ~/kinova_learning && cd ~/kinova_learning
 
-git clone --recurse-submodules -j8 git@github.com:Learning-in-robotics/Kinova_learning.git .
+git clone --recurse-submodules -j8 git@github.com:Learning-in-robotics/kinova_learning.git .
 ```
 
 ### Create virtual environment
