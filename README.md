@@ -8,35 +8,29 @@ Learning simple tasks with Kinova Gen3 robot
 ```bash
 mkdir -p ~/kinova_learning && cd ~/kinova_learning
 
-git clone git@github.com:Learning-in-robotics/Kinova_learning.git
+git clone --recurse-submodules -j8 git@github.com:Learning-in-robotics/Kinova_learning.git .
 ```
 
 ### Create virtual environment
 
-- Create a conda environment with python >=3.10
+- Create a virual environment with python >=3.10
 
 
 ### Install the packages
 ```bash
 cd ~/kinova_learning
 
-pip install kinova_gym robosuite/
+(venv) pip install -e . --use-pep517
 ```
+
+- `--use-pep517` is used to inlucde all the data files in the package in editable install.
 
 ## Test
 
-### To load the kinova arm in pybullet
+### To load the kinova arm in mujoco using robosuite
 
 ```bash
 cd ~/kinova_learning
 
-python3 kinova_gym/utils/load_robot_test.py
-```
-
-### To load the kinova arm in mujoco
-
-```bash
-cd ~/kinova_learning/kinova_gym
-
-python3 utils/load_robot_mujoco.py
+(venv) python3 kinova_gym/kinova_gym/utils/robosuite_test.py
 ```
