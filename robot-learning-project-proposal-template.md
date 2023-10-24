@@ -9,10 +9,10 @@
 
 ## Project Description
 
-Our project,VR-PPL, aims to address the challenge of enabling Kinova Gen3 robots to autonomously perform pick and place tasks through the power of machine learning and computer vision.
+Our project,VR-PPL, aims to address the challenge of enabling Kinova Gen3 robots to autonomously perform pick and place tasks through robot learning and computer vision.
 
 * What robot problem you want to address?
-  *  The problem we are tackling involves the fundamental robotic task of picking objects from one location and placing them in another. While this may seem simple to humans, it remains a complex challenge for robots due to the variability in object shapes, sizes, and placements, making it a quintessential problem in robotics. Furthermore, robots often need to adapt to dynamic and unstructured environments, making it essential to teach them the skill of pick and place in a versatile manner.
+  *  The problem we are tackling involves the fundamental robotic task of picking objects from one location and placing them in another location. While this may seem simple to humans, it remains a complex challenge for robots due to the variability in object shapes, sizes, and placements, making it a quintessential problem in robotics. Furthermore, robots often need to adapt to dynamic and unstructured environments, making it essential to teach them the skill of pick and place in a versatile manner. 
     
 * Why this problem is relevant for robotics?
   *  This problem is highly relevant for robotics for several reasons. First, automation and robotics have become integral to industries such as manufacturing, logistics, and healthcare. Efficient pick and place operations can significantly enhance productivity and reduce operational costs in these sectors. Secondly, robots can play a vital role in tasks that are dangerous or impractical for humans, such as handling hazardous materials or repetitive tasks, further highlighting the relevance of solving this problem.
@@ -22,17 +22,25 @@ Our project,VR-PPL, aims to address the challenge of enabling Kinova Gen3 robots
 
 ## Learning Techniques
 
+
 Briefly describe which concrete learning technique(s) you plan to use to achieve the goals of your project.
 
 If you plan to adapt a concrete approach from the literature (e.g. you want to follow a specific paper in your implementation), provide a brief description of the approach and why it might be suitable for your problem.
 
+Our approach is inspired from the DexMV pipeline [1]. The authors use imitation learing technique to learn dexterous manipulation from videos for simple pick and place task. In our proejct we would like to 
+
 ## Learning Data
 
-Briefly describe the data that you need / plan to use for solving the learning problem. If you use an existing dataset, shortly explain how the dataset fits your problem and whether you need to do any (re)labelling to fit your purpose; if you need to collect your own data, describe how you plan to collect the data (e.g. what simulation environment you plan to use).
+For this project we plan to collect our own data.
+* Collect human videos of picking and placing a cube at a predefined position.
+* The videos must include usage of only one arm that demonstates this pick and place action.
+* We use RGB-D camera to collect these videos. Depth data is also recorded as part of the demonstation.   
+
 
 ## Expected Project Outcomes
-
-List and briefly describe the main expected outcomes of your project (e.g. a simulation environment or a trained policy for your problem of interest).
+* A simulation enviroment of kinova Gen3 arm in MuJoCo.
+* A trained policy of pick and place that is leared through passive observations.
+* Transfer the policy to a real robot thus dealing with the embodiment mismatch problem.* 
 
 ## Evaluation Plan
 
@@ -40,4 +48,6 @@ Shortly describe how you plan to evaluate the learning success in your problem (
 
 ## References
 
-Include a list of any relevant references here.
+[1] - Qin, Y., Wu, Y. H., Liu, S., Jiang, H., Yang, R., Fu, Y., & Wang, X. (2022, October). Dexmv: Imitation learning for dexterous manipulation from human videos. In European Conference on Computer Vision (pp. 570-587). Cham: Springer Nature Switzerland.
+[2] - https://mujoco.org/
+
