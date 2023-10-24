@@ -197,6 +197,8 @@ if __name__ == "__main__":
       render_collision_mesh=False,
       render_visual_mesh=True,
       ignore_done=True,
+      horizon=(75+75)*8,
+      control_freq=60,
   )
 
   env = GymWrapper(env)
@@ -210,17 +212,18 @@ if __name__ == "__main__":
   gripper_close = -1.0
   gripper_current = 0.0
 
+  action = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+
   for i in range(100000):
-      env.step([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, gripper_current])
-      env.render()
       
-      if gripper_open_flag and gripper_current < gripper_open:
-        gripper_current += gripper_step
-      elif gripper_open_flag and gripper_current >= gripper_open:
-        gripper_open_flag = False
-      elif not gripper_open_flag and gripper_current > gripper_close:
-        gripper_current -= gripper_step
-      elif not gripper_open_flag and gripper_current <= gripper_close:
-        gripper_open_flag = True
-                            
-      time.sleep(0.01) 
+      # take action
+      for i in range(75):
+        env.step(action[0])
+        env.render()
+      for i in range(75):
+        env.step(action[1])
+        env.render()
+      # rest 
+      # for i in range(75):
+      #   env.step(action[2])
+      #   env.render()
