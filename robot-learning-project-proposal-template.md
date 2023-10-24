@@ -22,12 +22,8 @@ Our project,VR-PPL, aims to address the challenge of enabling Kinova Gen3 robots
 
 ## Learning Techniques
 
-
-Briefly describe which concrete learning technique(s) you plan to use to achieve the goals of your project.
-
-If you plan to adapt a concrete approach from the literature (e.g. you want to follow a specific paper in your implementation), provide a brief description of the approach and why it might be suitable for your problem.
-
-Our approach is inspired from the DexMV pipeline [1]. The authors use imitation learing technique to learn dexterous manipulation from videos for simple pick and place task. In our proejct we would like to 
+* Our approach is inspired from the DexMV pipeline [1]. The authors use imitation learing technique to learn dexterous manipulation from videos for simple pick and place task. 
+* In our proejct we would like to extend their approach to a full robot. The authors only consider the hands for manipulation. In our apprach we would like to address the problem of correspondance problem by considering the full robot.
 
 ## Learning Data
 
