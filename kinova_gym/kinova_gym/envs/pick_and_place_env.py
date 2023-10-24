@@ -5,6 +5,7 @@ from robosuite.models.tasks.task import Task
 from robosuite.models.objects import BoxObject
 from robosuite.utils.placement_samplers import UniformRandomSampler
 from robosuite.wrappers import GymWrapper 
+from robosuite.controllers import load_controller_config
 
 import numpy as np
 
@@ -45,7 +46,7 @@ class SimpleEnv(SingleArmEnv):
         renderer_config=None,
     ):
         
-        self.table_offset = np.array((0, 0, 1.1))
+        self.table_offset = np.array((0, 0, 1.2))
 
         self.placement_initializer = placement_initializer
 
@@ -182,11 +183,14 @@ class SimpleEnv(SingleArmEnv):
 
 
 if __name__ == "__main__":
+  
+  joint_pos_controller_config = load_controller_config(default_controller="JOINT_POSITION")
 
   # create the environment
   env = SimpleEnv(
       robots="Kinova3",
       mount_types="TableMount",
+      controller_configs=joint_pos_controller_config,
       has_renderer=True,
       has_offscreen_renderer=True,
       use_camera_obs=False,
@@ -196,13 +200,27 @@ if __name__ == "__main__":
   )
 
   env = GymWrapper(env)
-
   env.reset(seed=0)
-
   env.env.init_renderer()
 
   # run the simulation
-  for i in range(1000):
-      env.step([1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+  gripper_open_flag = False
+  gripper_step = 0.1
+  gripper_open = 1.0
+  gripper_close = -1.0
+  gripper_current = 0.0
+
+  for i in range(100000):
+      env.step([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, gripper_current])
       env.render()
-      time.sleep(0.01)
+      
+      if gripper_open_flag and gripper_current < gripper_open:
+        gripper_current += gripper_step
+      elif gripper_open_flag and gripper_current >= gripper_open:
+        gripper_open_flag = False
+      elif not gripper_open_flag and gripper_current > gripper_close:
+        gripper_current -= gripper_step
+      elif not gripper_open_flag and gripper_current <= gripper_close:
+        gripper_open_flag = True
+                            
+      time.sleep(0.01) 
