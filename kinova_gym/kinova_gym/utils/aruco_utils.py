@@ -2,6 +2,11 @@ import cv2
 from cv2 import aruco
 import numpy as np
 
+import threading
+import pynput.keyboard
+import time
+import yaml
+
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge, CvBridgeError
@@ -80,26 +85,27 @@ class ArucoDetector:
             return None, None
 
         # create posestamped message
-        pose_msg = PoseStamped()
-        pose_msg.header.stamp = image_msg.header.stamp
-        pose_msg.header.frame_id = "camera_color_optical_frame"
-        pose_msg.pose.position.x = translation_vector[0][0]
-        pose_msg.pose.position.y = translation_vector[1][0]
-        pose_msg.pose.position.z = translation_vector[2][0]
+        # pose_msg = PoseStamped()
+        # pose_msg.header.stamp = image_msg.header.stamp
+        # pose_msg.header.frame_id = "camera_color_optical_frame"
+        # pose_msg.pose.position.x = translation_vector[0][0]
+        # pose_msg.pose.position.y = translation_vector[1][0]
+        # pose_msg.pose.position.z = translation_vector[2][0]
 
-        euler_angles_rad = np.radians(euler_angles_degrees)
+        euler_angles_rad = np.radians(euler_angles_degrees).tolist()
 
         # convert euler angles to quaternion
-        quaternion = quaternion_from_euler(
-            euler_angles_rad[0], euler_angles_rad[1], euler_angles_rad[2]
-        )
+        # quaternion = quaternion_from_euler(
+        #     euler_angles_rad[0], euler_angles_rad[1], euler_angles_rad[2]
+        # )
 
-        pose_msg.pose.orientation.x = quaternion[0]
-        pose_msg.pose.orientation.y = quaternion[1]
-        pose_msg.pose.orientation.z = quaternion[2]
-        pose_msg.pose.orientation.w = quaternion[3]
+        # pose_msg.pose.orientation.x = quaternion[0]
+        # pose_msg.pose.orientation.y = quaternion[1]
+        # pose_msg.pose.orientation.z = quaternion[2]
+        # pose_msg.pose.orientation.w = quaternion[3]
 
-        return pose_msg, img
+        return [ translation_vector[0][0],  translation_vector[1][0], translation_vector[2][0],
+                 euler_angles_rad[0][0],euler_angles_rad[1][0],euler_angles_rad[2][0]], img
 
     def detect(self, image):
         # detect single marker and return its pose
@@ -259,16 +265,39 @@ class ArucoDetector:
 
         return image
 
+stop_thread = False
+
+def on_press(key):
+    global stop_thread
+    if key == pynput.keyboard.Key.esc:
+        stop_thread = True
 
 if __name__ == "__main__":
     rospy.init_node("aruco_detector", anonymous=True)
     aruco_detector = ArucoDetector(debug=True)
     aruco_detector.update_intrinsic_cam_info()
 
-    while not rospy.is_shutdown():
-        pose, img = aruco_detector.get_box_pose_in_cam()
-        if pose is not None:
-            # print(pose)
-            cv2.imshow("image", img)
-            cv2.waitKey(1)
-        rospy.sleep(0.1)
+    data= []
+
+    listener = pynput.keyboard.Listener(on_press=on_press)
+    listener.start()
+
+    def recorded_poses():
+        global stop_thread
+        while not rospy.is_shutdown() and True:
+            pose, img = aruco_detector.get_box_pose_in_cam()
+            if pose is not None:
+                data.append(pose)
+            if stop_thread:
+                    break
+            rospy.sleep(0.1)
+
+    t = threading.Thread(target=recorded_poses)
+    t.start()
+    t.join()
+
+    # print(data)
+    yaml_data = {"trajectory": np.asarray(data).tolist()}
+    with open("recorded_poses.yaml", "w") as yaml_file:
+        yaml.dump(yaml_data, yaml_file)
+
