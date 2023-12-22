@@ -263,16 +263,54 @@ class ArucoDetector:
         draw_text(translation_text, 10, 30)
         draw_text(rotation_text, 10, 60)
 
+        # cv2.imshow("image", image)
+        # cv2.waitKey(1)
+
         return image
+    
+def plot_frame_axes(ax, pose):
+    
+    # plot xyz points
+    ax.scatter(pose[0], pose[1], c='r', marker='o')
+    
+
+def plot_6d_points_in_3d_proj(points):
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    # plot axis markers
+    for point in points:
+        plot_frame_axes(ax, point)
+
+    plt.show()
+
 
 stop_thread = False
+start_thread = False
 
 def on_press(key):
     global stop_thread
+    global start_thread
     if key == pynput.keyboard.Key.esc:
         stop_thread = True
+    elif key == pynput.keyboard.Key.space:
+        start_thread = True
 
-if __name__ == "__main__":
+def create_file_name(path):
+    import os
+    file_name = "recorded_poses.yaml"
+    
+    # get number of files in the folder
+    files = os.listdir(path)
+    num_files = len(files)
+
+    # create file name
+    new_file_name = f"recorded_poses_{num_files+1}.yaml"
+    return new_file_name
+
+def main():
     rospy.init_node("aruco_detector", anonymous=True)
     aruco_detector = ArucoDetector(debug=True)
     aruco_detector.update_intrinsic_cam_info()
@@ -284,20 +322,61 @@ if __name__ == "__main__":
 
     def recorded_poses():
         global stop_thread
+        global start_thread
         while not rospy.is_shutdown() and True:
             pose, img = aruco_detector.get_box_pose_in_cam()
-            if pose is not None:
+            if pose is not None and start_thread:
                 data.append(pose)
             if stop_thread:
                     break
-            rospy.sleep(0.1)
+            # rospy.sleep(0.001)
+
+    print(f'press space to start data collection, press esc to stop')
 
     t = threading.Thread(target=recorded_poses)
     t.start()
     t.join()
 
+    # data folder
+    path = "data/"
+
+    # get file name
+    file_name = create_file_name(path)
+
     # print(data)
     yaml_data = {"trajectory": np.asarray(data).tolist()}
-    with open("recorded_poses.yaml", "w") as yaml_file:
+    print(f'len: {len(yaml_data["trajectory"])}')
+    with open(path+file_name, "w+") as yaml_file:
         yaml.dump(yaml_data, yaml_file)
+
+def test():
+
+    import os
+
+    path = "data/"
+    files = os.listdir(path)
+
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
+    fig = plt.figure(figsize=(20,20))
+    ax = fig.add_subplot(111)
+
+    for file  in files:
+        with open(path+file, "r") as yaml_file:
+            data = yaml.load(yaml_file, Loader=yaml.FullLoader)
+
+        # plot axis markers
+        for point in data["trajectory"]:
+            plot_frame_axes(ax, point)
+
+    plt.show()
+
+if __name__ == "__main__":
+    # test()
+    # main()
+
+    import os
+
+    path = "data/"
+    files = os.listdir(path)
 
